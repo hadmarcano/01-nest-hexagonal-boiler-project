@@ -1,3 +1,4 @@
+import { UserEntity } from 'src/modules/user/infraestructure/user.entity';
 import { DataSource } from 'typeorm';
 
 export const databaseProviders = [
@@ -12,7 +13,8 @@ export const databaseProviders = [
         password: 'mypass',
         database: 'postgresdb',
         entities: [
-          __dirname + '/../../../modules/**/infraestructura/*.entity{.ts,.js}',
+          // __dirname + '/../../../modules/**/infraestructura/*.entity{.ts,.js}',
+          UserEntity,
         ],
         synchronize: true, // Dev
         logging: true, // Dev

@@ -28,7 +28,7 @@ export class AppController {
 // 1. decorador de tipo factoria/función - Tiempo de compilación
 function Controlador(path: string) {
   return function (constructor: any) {
-    console.log('Controlador - Tiempo de compilación -', path);
+    // console.log('Controlador - Tiempo de compilación -', path);
     Reflect.defineMetadata('path', path, constructor); // esta metadata => solo es accesible cuando existe una instacia de la clase.
   };
 }

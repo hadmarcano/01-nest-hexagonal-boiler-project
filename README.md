@@ -58,9 +58,79 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
-## Support
+## DATABASE
+### MySQL
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+yarn add --save typeorm mysql2
+```
+```
+msqladvance_database:
+docker run -d --name msqladvance-db -p 3330:3306 -e MYSQL_ROOT_PASSWORD="password" -e MYSQL_USER="user" -e MYSQL_PASSWORD="password" -e MYSQL_DATABASE="advancedb" mysql:8
+```
+```Database Provider
+export const databaseProviders = [
+  {
+    provide: 'DATA_SOURCE',
+    useFactory: async () => {
+      const dataSource = new DataSource({
+        type: 'mysql',
+        host: 'localhost',
+        port: 3330,
+        username: 'user',
+        password: 'password',
+        database: 'advancedb',
+        entities: [
+          // __dirname + '/../../../modules/**/infraestructura/*.entity{.ts,.js}',
+          UserEntity,
+        ],
+        synchronize: true, // Dev
+        logging: true, // Dev
+      });
+
+      console.log('Database initialized');
+      return dataSource.initialize();
+    },
+  },
+];
+```
+## Getting started
+### POSTGRESQL
+
+```
+yarn add --save typeorm pg
+```
+```
+pgadvance_database:
+docker run -d --name pgadvance-db -p 5432:5432 -e POSTGRES_USER="user" -e POSTGRES_PASSWORD="password" -e POSTGRES_DB="advancedb" postgres:14.3
+```
+```Database Provider
+export const databaseProviders = [
+  {
+    provide: 'DATA_SOURCE',
+    useFactory: async () => {
+      const dataSource = new DataSource({
+        type: 'postgres',
+        host: 'localhost',
+        port: 5432,
+        username: 'user',
+        password: 'password',
+        database: 'advancedb',
+        entities: [
+          // __dirname + '/../../../modules/**/infraestructura/*.entity{.ts,.js}',
+          UserEntity,
+        ],
+        synchronize: true, // Dev
+        logging: true, // Dev
+      });
+
+      console.log('Database initialized');
+      return dataSource.initialize();
+    },
+  },
+];
+```
+
 
 ## Stay in touch
 

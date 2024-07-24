@@ -1,31 +1,43 @@
+import { Inject } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { UserRepository } from '../domain/repositories/user.repository';
 import { User } from '../domain/roots/user';
 import { UserDto } from './dtos/user.dto';
+import { UserEntity } from './user.entity';
 
-// export class UserInfraestructure implements UserRepository {
-export class UserInfraestructure {
-  save(user: User): Promise<void> {
-    const userEntity = UserDto.fromDomainToData(user);
-    throw new Error(`Implementation fake`);
+export class UserInfraestructure implements UserRepository {
+  constructor(
+    @Inject('USER_REPOSITORY')
+    private readonly repository: Repository<UserEntity>,
+  ) {}
+
+  async save(user: User): Promise<User> {
+    const userEntity = UserDto.fromDomainToData(user) as UserEntity;
+    await this.repository.save(userEntity);
+    return user;
   }
 
-  findByEmail() {
-    //
+  findByEmail(email: string): Promise<User> {
+    console.log(email);
+    throw new Error('Method not implemented');
   }
 
-  FindByRefreshToken() {
-    //
+  findByRefreshToken(refreshToken: string): Promise<User> {
+    console.log(refreshToken);
+    throw new Error('Method not implemented');
   }
 
-  list() {
-    //
+  list(id: string): Promise<User[]> {
+    console.log(id);
+    throw new Error('Method not implemented');
   }
 
-  listByPage() {
-    //
+  listByPage(page: number, pageSize: number): Promise<User[]> {
+    console.log(page, pageSize);
+    throw new Error('Method not implemented');
   }
 
-  delete() {
-    //
+  delete(): Promise<void> {
+    throw new Error('Method not implemented');
   }
 }

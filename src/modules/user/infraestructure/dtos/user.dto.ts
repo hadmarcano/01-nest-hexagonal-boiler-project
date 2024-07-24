@@ -1,3 +1,4 @@
+import { RoleEntity } from '../../../role/infraestructure/entities/role.entity';
 import { User } from '../../domain/roots/user';
 import { UserEntity } from '../user.entity';
 
@@ -6,7 +7,6 @@ export class UserDto {
     if (Array.isArray(data)) {
       return data.map((item) => this.fromDomainToData(item)) as UserEntity[];
     }
-
     const {
       id,
       fullname,
@@ -18,20 +18,25 @@ export class UserDto {
       updatedAt,
       deletedAt,
       roles,
+      address,
     } = data.properties();
-
     const userEntity = new UserEntity();
     userEntity.id = id;
     userEntity.fullname = fullname;
     userEntity.email = email;
     userEntity.password = password;
     userEntity.image = image;
-    userEntity.refresToken = refreshToken;
-    userEntity.createdAt = createdAt.toISOString();
-    userEntity.updatedAt = updatedAt?.toISOString();
-    userEntity.deletedAt = deletedAt?.toISOString();
-    userEntity.roles = roles;
-
+    userEntity.refreshToken = refreshToken;
+    userEntity.createdAt = createdAt;
+    userEntity.updatedAt = updatedAt;
+    userEntity.deletedAt = deletedAt;
+    userEntity.roles = roles.map((role) => {
+      const roleEntity = new RoleEntity();
+      roleEntity.id = role.id;
+      roleEntity.name = role.name;
+      return role;
+    });
+    userEntity.address = address;
     return userEntity;
   }
 }

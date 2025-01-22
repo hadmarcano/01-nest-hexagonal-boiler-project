@@ -3,10 +3,12 @@ import { User } from '../../domain/roots/user';
 import { UserEntity } from '../user.entity';
 
 export class UserDto {
+  // static method to convert a User to a UserEntity
   static fromDomainToData(data: User | User[]): UserEntity | UserEntity[] {
     if (Array.isArray(data)) {
       return data.map((item) => this.fromDomainToData(item)) as UserEntity[];
     }
+
     const {
       id,
       fullname,
@@ -20,6 +22,7 @@ export class UserDto {
       roles,
       address,
     } = data.properties();
+
     const userEntity = new UserEntity();
     userEntity.id = id;
     userEntity.fullname = fullname;
@@ -30,11 +33,10 @@ export class UserDto {
     userEntity.createdAt = createdAt;
     userEntity.updatedAt = updatedAt;
     userEntity.deletedAt = deletedAt;
-    userEntity.roles = roles.map((role) => {
+    userEntity.roles = roles.map(({ id, name }) => {
       const roleEntity = new RoleEntity();
-      roleEntity.id = role.id;
-      roleEntity.name = role.name;
-      return role;
+      Object.assign(roleEntity, { id, name });
+      return roleEntity;
     });
     userEntity.address = address;
     return userEntity;

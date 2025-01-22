@@ -4,7 +4,6 @@ import {
   UserProperties,
   UserUpdateProperties,
 } from './interfaces/user.interface';
-// import { RoleEntity } from '../../../role/infraestructure/entities/role.entity';
 
 export class User {
   private readonly id: string;

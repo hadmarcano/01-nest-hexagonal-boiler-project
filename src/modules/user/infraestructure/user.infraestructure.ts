@@ -9,6 +9,9 @@ export class UserInfraestructure implements UserRepository {
   constructor(
     @Inject('USER_REPOSITORY')
     private readonly repository: Repository<UserEntity>,
+    // In case of required to use a different manager
+    // @Inject('USER_MANAGER')
+    // private readonly manager: any,
   ) {}
 
   async save(user: User): Promise<User> {

@@ -5,7 +5,6 @@ export interface UserEssentials {
   readonly image: string;
   readonly email: string;
   readonly password: string;
-  readonly refreshToken: string;
   readonly roles: any[];
 }
 
@@ -15,6 +14,7 @@ export interface UserOptionals {
   readonly createdAt: Date;
   readonly updatedAt: Date;
   readonly deletedAt: Date;
+  refreshToken: string;
 }
 
 export type UserProperties = UserEssentials & Partial<UserOptionals>;

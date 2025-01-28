@@ -41,7 +41,7 @@ export class Role {
   @IsUUID()
   id: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MinLength(3)
   name: string;
@@ -63,7 +63,7 @@ export class UserCreateDTO {
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   image: string;
 

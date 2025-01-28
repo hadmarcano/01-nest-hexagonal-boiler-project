@@ -20,12 +20,18 @@ export class UserInfraestructure implements UserRepository {
     return user;
   }
 
-  findByEmail(email: string): Promise<User> {
-    console.log(email);
-    throw new Error('Method not implemented');
+  async findByEmail(email: string): Promise<UserEntity | null> {
+    console.log('[LOG] 3 - infrastructure email', email);
+
+    const userEntity = await this.repository.findOne({ where: { email } });
+    if (!userEntity) {
+      return null;
+    }
+
+    return userEntity;
   }
 
-  findByRefreshToken(refreshToken: string): Promise<User> {
+  async findByRefreshToken(refreshToken: string): Promise<User> {
     console.log(refreshToken);
     throw new Error('Method not implemented');
   }

@@ -16,7 +16,7 @@ export class UserEntity {
   @Column({ type: 'varchar', length: 100, nullable: false })
   password: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   image: string;
 
   @Column({ type: 'json', nullable: false })

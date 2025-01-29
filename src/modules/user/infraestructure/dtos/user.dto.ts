@@ -41,4 +41,7 @@ export class UserDto {
     userEntity.address = address;
     return userEntity;
   }
+
+  // static fromDataToDomain.....
+
 }

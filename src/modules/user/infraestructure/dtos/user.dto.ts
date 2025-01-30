@@ -1,4 +1,5 @@
 import { RoleEntity } from '../../../role/infraestructure/entities/role.entity';
+import { Address } from '../../domain/entities/address';
 import { User } from '../../domain/roots/user';
 import { UserEntity } from '../user.entity';
 
@@ -42,6 +43,43 @@ export class UserDto {
     return userEntity;
   }
 
-  // static fromDataToDomain.....
+  static fromDataToDomain(data: UserEntity | UserEntity[]): User | User[] {
+    if (Array.isArray(data)) {
+      return data.map((item) => this.fromDataToDomain(item)) as User[];
+    }
 
+    const {
+      id,
+      fullname,
+      email,
+      password,
+      image,
+      refreshToken,
+      createdAt,
+      updatedAt,
+      deletedAt,
+      roles,
+      address,
+    } = data;
+
+    const user = new User({
+      id,
+      fullname,
+      email,
+      password,
+      image,
+      refreshToken,
+      createdAt,
+      updatedAt,
+      deletedAt,
+      roles: roles.map(({ id, name }) => {
+        const role = new RoleEntity();
+        Object.assign(role, { id, name });
+        return role;
+      }),
+      address: Object.assign(new Address(), address),
+    });
+
+    return user;
+  }
 }

@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { UserRepository } from '../domain/repositories/user.repository';
 import { User } from '../domain/roots/user';
 import { UserDto } from './dtos/user.dto';
@@ -20,15 +20,28 @@ export class UserInfraestructure implements UserRepository {
     return user;
   }
 
-  async findByEmail(email: string): Promise<UserEntity | null> {
-    console.log('[LOG] 3 - infrastructure email', email);
-
+  async findByEmail(email: string): Promise<User | null> {
     const userEntity = await this.repository.findOne({ where: { email } });
     if (!userEntity) {
       return null;
     }
 
-    return userEntity;
+    const user = UserDto.fromDataToDomain(userEntity) as User;
+
+    return user;
+  }
+
+  async findOne(id: string): Promise<User | null> {
+    const userEntity = await this.repository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+    if (!userEntity) {
+      return null;
+    }
+
+    const response = UserDto.fromDataToDomain(userEntity) as User;
+
+    return response;
   }
 
   async findByRefreshToken(refreshToken: string): Promise<User> {

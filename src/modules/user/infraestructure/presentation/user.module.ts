@@ -5,8 +5,9 @@ import { userProviders } from '../providers/user.provider';
 import { UserCreate } from '../../application/user-create';
 import { UserByEmail } from '../../application/user-by-email';
 import { UserInfraestructure } from '../user.infraestructure';
+import { UserById } from '../../application/user-by-id';
 
-const userApplications = [UserCreate, UserByEmail];
+const userApplications = [UserCreate, UserByEmail, UserById];
 
 const userInfraestructures = [UserInfraestructure];
 

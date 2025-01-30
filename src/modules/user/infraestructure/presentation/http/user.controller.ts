@@ -1,10 +1,12 @@
 // User Controller
-import { Controller, Post, Body, Query, Get } from '@nestjs/common';
+import { Controller, Post, Body, Query, Get, Param } from '@nestjs/common';
 import { UserCreateDTO } from '../dtos/user.create.dto';
 import { UserProperties } from 'src/modules/user/domain/roots/interfaces/user.interface';
 import { UserFactory } from 'src/modules/user/domain/roots/user.factory';
 import { UserCreate } from 'src/modules/user/application/user-create';
 import { UserByEmail } from 'src/modules/user/application/user-by-email';
+import { UserById } from 'src/modules/user/application/user-by-id';
+import { UserGetOneDTO } from '../dtos/user.getOne.dto';
 
 @Controller('users')
 export class UserController {
@@ -12,6 +14,7 @@ export class UserController {
   constructor(
     private readonly userCreate: UserCreate,
     private readonly userFindByEmail: UserByEmail,
+    private readonly userFindOne: UserById,
   ) {}
 
   @Post()
@@ -36,13 +39,14 @@ export class UserController {
 
   @Get()
   async findByEmail(@Query('email') email: string) {
-    // Pasos de un enfoque DDD
-    // 1. Validar que el objeto(dominio) recibido sea válido (Validas el negocio)
-    console.log('[LOG] 1 - email controller', email);
     const user = await this.userFindByEmail.findByEmail(email);
 
-    console.log('[LOG] 4- UserFindByEmail', user);
+    return user;
+  }
 
+  @Get(':userId')
+  async findOne(@Param('userId') userId: string) {
+    const user = await this.userFindOne.findOne(userId);
     return user;
   }
 }

@@ -6,7 +6,7 @@ export interface UserRepository {
   findByEmail(email: string): Promise<User | null>;
   findOne(id: string): Promise<User | null>;
   findByRefreshToken(refreshToken: string): Promise<User>;
-  list(id: string): Promise<User[]>;
+  list(): Promise<User[]>;
   listByPage(page: number, pageSize: number): Promise<User[]>;
   delete(id: string): Promise<void>;
 }

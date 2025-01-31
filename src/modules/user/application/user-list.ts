@@ -4,17 +4,16 @@ import { UserInfraestructure } from '../infraestructure/user.infraestructure';
 import { UserResponseDTO } from './dtos/user.response.dto';
 
 @Injectable()
-export class UserById {
+export class UserList {
   constructor(
     // Inject the UserRepository service to use it
     @Inject(UserInfraestructure)
     private readonly repository: UserRepository,
   ) {}
 
-  async findOne(id: string) {
-    const user = await this.repository.findOne(id as string);
-
-    const response = UserResponseDTO.fromDomainToResponse(user);
+  async list() {
+    const users = await this.repository.list();
+    const response = UserResponseDTO.fromDomainToResponse(users);
     return response;
   }
 }

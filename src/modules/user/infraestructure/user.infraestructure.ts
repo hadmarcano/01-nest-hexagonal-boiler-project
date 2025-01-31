@@ -49,9 +49,16 @@ export class UserInfraestructure implements UserRepository {
     throw new Error('Method not implemented');
   }
 
-  list(id: string): Promise<User[]> {
-    console.log(id);
-    throw new Error('Method not implemented');
+  async list(): Promise<User[]> {
+    const userEntities = await this.repository.find({
+      where: { deletedAt: IsNull() },
+    });
+
+    const users = userEntities.map(
+      (userEntity) => UserDto.fromDataToDomain(userEntity) as User,
+    );
+
+    return users;
   }
 
   listByPage(page: number, pageSize: number): Promise<User[]> {

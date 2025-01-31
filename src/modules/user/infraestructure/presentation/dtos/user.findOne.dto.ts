@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
-export class UserGetOneDTO {
+export class UserFindOneDTO {
   @IsNotEmpty()
   @IsString()
   @IsUUID()

@@ -6,7 +6,8 @@ import { UserFactory } from 'src/modules/user/domain/roots/user.factory';
 import { UserCreate } from 'src/modules/user/application/user-create';
 import { UserByEmail } from 'src/modules/user/application/user-by-email';
 import { UserById } from 'src/modules/user/application/user-by-id';
-import { UserGetOneDTO } from '../dtos/user.getOne.dto';
+import { UserFindOneDTO } from '../dtos/user.findOne.dto';
+import { UserList } from 'src/modules/user/application/user-list';
 
 @Controller('users')
 export class UserController {
@@ -15,6 +16,7 @@ export class UserController {
     private readonly userCreate: UserCreate,
     private readonly userFindByEmail: UserByEmail,
     private readonly userFindOne: UserById,
+    private readonly userList: UserList,
   ) {}
 
   @Post()
@@ -38,14 +40,22 @@ export class UserController {
   }
 
   @Get()
+  async list() {
+    const user = await this.userList.list();
+
+    return user;
+  }
+
+  @Get()
   async findByEmail(@Query('email') email: string) {
     const user = await this.userFindByEmail.findByEmail(email);
 
     return user;
   }
 
-  @Get(':userId')
-  async findOne(@Param('userId') userId: string) {
+  @Get('/:userId')
+  async findOne(@Param() params: UserFindOneDTO) {
+    const { userId } = params;
     const user = await this.userFindOne.findOne(userId);
     return user;
   }

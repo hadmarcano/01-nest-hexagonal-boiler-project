@@ -14,15 +14,13 @@ export class AppointmentMXCommand implements ICommand {
 
 // Define the handler for the command
 @CommandHandler(AppointmentMXCommand)
-export class AppointmentCLCommandHandler
+export class AppointmentMXCommandHandler
   implements ICommandHandler<AppointmentMXCommand>
 {
-  constructor(private readonly command: AppointmentMXCommand) {}
+  async execute(command: AppointmentMXCommand) {
+    console.log('[LOG] AppointmentCOCommandHandler', command);
 
-  async execute() {
-    console.log('[LOG] AppointmentCOCommandHandler', this.command);
-
-    const { patientId, doctorId, specialityId, centerId, date } = this.command;
+    const { patientId, doctorId, specialityId, centerId, date } = command;
 
     // TODO: Implement the command handler logic
     const appointment = new Appointment(

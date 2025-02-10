@@ -112,7 +112,7 @@ Si el problema persiste, intenta lo siguiente:
 3. **Reinicia Todo**:
    ```bash
    docker-compose down
-   docker-compose up --build
+   docker-compose up -d --build
    ```
 
 Con estas configuraciones, deberías poder conectarte sin problemas desde `pgadmin` o cualquier cliente externo.

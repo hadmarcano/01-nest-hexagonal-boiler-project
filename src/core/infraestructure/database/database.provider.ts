@@ -1,3 +1,4 @@
+import { CourseEntity } from 'src/modules/course/infraestructure/course.entity';
 import { RoleEntity } from 'src/modules/role/infraestructure/entities/role.entity';
 import { UserEntity } from 'src/modules/user/infraestructure/user.entity';
 import { DataSource } from 'typeorm';
@@ -17,6 +18,7 @@ export const databaseProviders = [
           // __dirname + '/../../../modules/**/infraestructura/*.entity{.ts,.js}',
           UserEntity,
           RoleEntity,
+          CourseEntity,
         ],
         synchronize: true, // Dev
         logging: true, // Dev

@@ -3,7 +3,7 @@ import { CourseRepository } from '../domain/repository/course.repository';
 import { Course } from '../domain/roots/course';
 import { Repository } from 'typeorm';
 import { CourseEntity } from './course.entity';
-import { HttpException, Inject } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { CourseDto } from './dtos/course.dto';
 
 export class CourseInfraestructure implements CourseRepository {

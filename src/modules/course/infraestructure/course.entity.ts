@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { ScheduleEntity } from 'src/modules/schedule/infraestructure/schedule.entity';
+import { Entity, PrimaryColumn, Column, OneToMany } from 'typeorm';
 
 @Entity({ name: 'course' })
 export class CourseEntity {
@@ -20,5 +21,8 @@ export class CourseEntity {
   @Column({ type: 'boolean', nullable: false })
   isDeleted: boolean;
 
-  // Relationships with Programs
+  // Relationships with course
+  @OneToMany(() => ScheduleEntity, (schedule) => schedule.course)
+  schedules: ScheduleEntity[];
+
 }

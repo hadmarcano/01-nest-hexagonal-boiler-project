@@ -1,5 +1,6 @@
 import { CourseEntity } from 'src/modules/course/infraestructure/course.entity';
 import { RoleEntity } from 'src/modules/role/infraestructure/entities/role.entity';
+import { ScheduleEntity } from 'src/modules/schedule/infraestructure/schedule.entity';
 import { UserEntity } from 'src/modules/user/infraestructure/user.entity';
 import { DataSource } from 'typeorm';
 
@@ -19,6 +20,7 @@ export const databaseProviders = [
           UserEntity,
           RoleEntity,
           CourseEntity,
+          ScheduleEntity,
         ],
         synchronize: true, // Dev
         logging: true, // Dev

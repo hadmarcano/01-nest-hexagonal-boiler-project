@@ -23,6 +23,17 @@ export class CourseInfraestructure implements CourseRepository {
     }
   }
 
+  async update(id: string, course: Course): Promise<Course> {
+    try {
+      const courseEntity = CourseDto.fromDomainToData(course) as CourseEntity;
+
+      await this.repository.update(id, courseEntity);
+      return course;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   async findById(id: string): Promise<Course | null> {
     try {
       const courseEntity = await this.repository.findOne({

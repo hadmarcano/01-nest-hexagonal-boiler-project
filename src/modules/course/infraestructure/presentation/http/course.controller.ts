@@ -6,14 +6,17 @@ import {
   Get,
   Delete,
   Param,
-  HttpException,
+  Put,
 } from '@nestjs/common';
 import { Course, CourseProps } from 'src/modules/course/domain/roots/course';
 import { CourseApplication } from 'src/modules/course/application/course.application';
-import { CourseCreateDTO } from '../dtos/course.create.dto';
+import { CourseCreateDTO } from '../dtos/course-create.dto';
+import { CourseIdDTO } from '../dtos/course-id.dto';
 import { CourseService } from 'src/modules/course/application/services/course.service';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
 
+@ApiTags('Course')
 @Controller('courses')
 export class CourseController {
   constructor(
@@ -22,6 +25,7 @@ export class CourseController {
   ) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create course' })
   async create(@Body() body: CourseCreateDTO) {
     console.log('[LOG] create body', body);
 
@@ -42,25 +46,38 @@ export class CourseController {
     return course;
   }
 
+  @Put('/:id')
+  @ApiOperation({ summary: 'Update course' })
+  async update(@Param() param: CourseIdDTO, @Body() body: CourseCreateDTO) {
+    const course = await this.courseApplication.findById(param.id);
+    course.update(body);
+
+    return await this.courseApplication.save(course);
+  }
+
   @Get()
+  @ApiOperation({ summary: 'List courses' })
   async list() {
     const courses = await this.courseApplication.findAll();
     return courses;
   }
 
-  @Get()
+  @Get('/:id')
+  @ApiOperation({ summary: 'Find course by id' })
   async findById(@Query('id') id: string) {
     const course = await this.courseApplication.findById(id);
     return course;
   }
 
-  @Get()
+  @Get('/slug/:slug')
+  @ApiOperation({ summary: 'Find course by slug' })
   async findBySlug(@Query('slug') slug: string) {
     const course = await this.courseApplication.findBySlug(slug);
     return course;
   }
 
-  @Get()
+  @Get('/page/:page/:pageSize')
+  @ApiOperation({ summary: 'Find course by page' })
   async findByPage(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
@@ -70,6 +87,7 @@ export class CourseController {
   }
 
   @Delete('disable/:id')
+  @ApiOperation({ summary: 'Disable course' })
   async softDelete(@Param('id') id: string) {
     try {
       const course = await this.courseApplication.softDelete(id);
@@ -82,6 +100,7 @@ export class CourseController {
   }
 
   @Delete('remove/:id')
+  @ApiOperation({ summary: 'Remove course' })
   async delete(@Param('id') id: string) {
     const course = await this.courseApplication.delete(id);
     return course;

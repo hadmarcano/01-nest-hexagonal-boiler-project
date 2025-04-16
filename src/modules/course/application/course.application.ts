@@ -14,6 +14,10 @@ export class CourseApplication {
     return this.repository.save(course);
   }
 
+  async update(id: string, course: Course) {
+    return this.repository.update(id, course);
+  }
+
   async findById(id: string) {
     return this.repository.findById(id);
   }

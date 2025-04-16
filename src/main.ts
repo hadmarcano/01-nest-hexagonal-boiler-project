@@ -5,12 +5,47 @@ import {
   HttpStatus,
   ValidationError,
   ValidationPipe,
+  VersioningType,
 } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.setGlobalPrefix('api/v1');
+  // Activating the versioning of the API
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
+
+  console.log('[LOG] Versioning Enabled');
+
+  // Configure Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Nest AppCourse')
+    .setDescription('Nest AppCourse Advaced')
+    .setVersion('1.0')
+    .addTag('v1')
+    .build();
+
+  // console.log('[LOG] Swagger Enabled');
+
+  const document = SwaggerModule.createDocument(app, config, {
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+  });
+
+  // console.log('[LOG] Swagger Document Created');
+
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      tagsSorter: 'alpha',
+      operationsSorter: 'alpha',
+    },
+  });
+
+  // console.log('[LOG] Swagger Setup');
+
+  // app.setGlobalPrefix('api/v1');
   app.enableCors();
 
   app.useGlobalPipes(
@@ -30,19 +65,6 @@ async function bootstrap() {
       },
     }),
   );
-
-  // app.enableVersioning({
-  //   type: VersioningType.URI,
-  //   defaultVersion: '1',
-  //   prefix: 'api',
-  // });
-
-  // app.enableSwagger({
-  //   title: 'Nest AppCourse',
-  //   description: 'Nest AppCourse',
-  //   version: '1.0',
-  //   // prefix: 'api',
-  // });
 
   await app.listen(3000);
 }

@@ -8,7 +8,9 @@ import { UserByEmail } from 'src/modules/user/application/user-by-email';
 import { UserById } from 'src/modules/user/application/user-by-id';
 import { UserFindOneDTO } from '../dtos/user.findOne.dto';
 import { UserList } from 'src/modules/user/application/user-list';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('User')
 @Controller('users')
 export class UserController {
   // Inject the UserCreate service
@@ -20,6 +22,7 @@ export class UserController {
   ) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create user' })
   async create(@Body() body: UserCreateDTO) {
     // Pasos de un enfoque DDD
     // 1. Validar que el objeto(dominio) recibido sea válido (Validas el negocio)
@@ -40,6 +43,7 @@ export class UserController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'List users' })
   async list() {
     const user = await this.userList.list();
 
@@ -47,6 +51,7 @@ export class UserController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Find user by email' })
   async findByEmail(@Query('email') email: string) {
     const user = await this.userFindByEmail.findByEmail(email);
 
@@ -54,6 +59,7 @@ export class UserController {
   }
 
   @Get('/:userId')
+  @ApiOperation({ summary: 'Find user by id' })
   async findOne(@Param() params: UserFindOneDTO) {
     const { userId } = params;
     const user = await this.userFindOne.findOne(userId);

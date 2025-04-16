@@ -4,6 +4,7 @@ import { AppointmentCOCommand } from '../../application/commands/appointment.co.
 import { AppointmentMXCommand } from '../../application/commands/appointment.mx.command';
 import { CommandBus } from '@nestjs/cqrs';
 import { AppointmentDTO } from './dtos/appointment.create.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 /* The `AppointmentController` class in TypeScript defines a controller for handling appointment
 creation requests, utilizing a command pattern with country-specific commands. */
@@ -13,6 +14,7 @@ const countryCommands = {
   MX: AppointmentMXCommand,
 };
 
+@ApiTags('Appointment')
 @Controller('appointment')
 export class AppointmentController {
   // Receives an Injection Dependency
@@ -22,6 +24,7 @@ export class AppointmentController {
   `AppointmentController` class is specifying that this method should handle POST requests to the
   '/appointment' endpoint. */
   @Post('')
+  @ApiOperation({ summary: 'Create appointment' })
   async createAppointment(@Body() appointment: AppointmentDTO) {
     // console.log('[LOG] AppointmentController', appointment);
 

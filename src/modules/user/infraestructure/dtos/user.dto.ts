@@ -43,6 +43,41 @@ export class UserDto {
     return userEntity;
   }
 
+  static fromDomainToDataForUpdate(data: User): UserEntity {
+    const {
+      id,
+      fullname,
+      email,
+      password,
+      image,
+      refreshToken,
+      deletedAt,
+      roles,
+      address,
+      updatedAt, // ya seteado desde el dominio
+    } = data.properties();
+
+    const userEntity = new UserEntity();
+    userEntity.id = id;
+    userEntity.fullname = fullname;
+    userEntity.email = email;
+    userEntity.password = password;
+    userEntity.image = image;
+    userEntity.refreshToken = refreshToken;
+    userEntity.deletedAt = deletedAt;
+    userEntity.updatedAt = updatedAt;
+
+    userEntity.roles = roles.map(({ id }) => {
+      const roleEntity = new RoleEntity();
+      roleEntity.id = id;
+      return roleEntity;
+    });
+
+    userEntity.address = address;
+
+    return userEntity;
+  }
+
   static fromDataToDomain(data: UserEntity | UserEntity[]): User | User[] {
     if (Array.isArray(data)) {
       return data.map((item) => this.fromDataToDomain(item)) as User[];

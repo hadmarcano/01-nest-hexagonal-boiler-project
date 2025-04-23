@@ -44,6 +44,12 @@ export class UserInfraestructure implements UserRepository {
     return response;
   }
 
+  async update(id: string, user: User): Promise<User> {
+    const userEntity = UserDto.fromDomainToData(user) as UserEntity;
+    await this.repository.update(id, userEntity);
+    return user;
+  }
+
   async findByRefreshToken(refreshToken: string): Promise<User> {
     console.log(refreshToken);
     throw new Error('Method not implemented');

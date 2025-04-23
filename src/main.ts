@@ -7,7 +7,8 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
+import { generateOpenApiSpec } from './utils/generate-openapi';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,32 +21,16 @@ async function bootstrap() {
 
   console.log('[LOG] Versioning Enabled');
 
-  // Configure Swagger
-  const config = new DocumentBuilder()
-    .setTitle('Nest AppCourse')
-    .setDescription('Nest AppCourse Advaced')
-    .setVersion('1.0')
-    .addTag('v1')
-    .build();
+  // Generate and save OpenAPI specification
+  const document = generateOpenApiSpec(app);
 
-  // console.log('[LOG] Swagger Enabled');
-
-  const document = SwaggerModule.createDocument(app, config, {
-    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
-  });
-
-  // console.log('[LOG] Swagger Document Created');
-
-  SwaggerModule.setup('api', app, document, {
+  SwaggerModule.setup('docs', app, document, {
     swaggerOptions: {
       tagsSorter: 'alpha',
       operationsSorter: 'alpha',
     },
   });
 
-  // console.log('[LOG] Swagger Setup');
-
-  // app.setGlobalPrefix('api/v1');
   app.enableCors();
 
   app.useGlobalPipes(

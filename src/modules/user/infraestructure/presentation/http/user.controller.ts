@@ -1,14 +1,33 @@
 // User Controller
-import { Controller, Post, Body, Query, Get, Param } from '@nestjs/common';
-import { UserCreateDTO } from '../dtos/user.create.dto';
-import { UserProperties } from 'src/modules/user/domain/roots/interfaces/user.interface';
+import {
+  Controller,
+  Post,
+  Body,
+  Query,
+  Get,
+  Put,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  UserProperties,
+  UserUpdateProperties,
+} from 'src/modules/user/domain/roots/interfaces/user.interface';
 import { UserFactory } from 'src/modules/user/domain/roots/user.factory';
 import { UserCreate } from 'src/modules/user/application/user-create';
 import { UserByEmail } from 'src/modules/user/application/user-by-email';
 import { UserById } from 'src/modules/user/application/user-by-id';
-import { UserFindOneDTO } from '../dtos/user.findOne.dto';
 import { UserList } from 'src/modules/user/application/user-list';
+import { UserUpdate } from 'src/modules/user/application/user-update';
+import { UserCreateDTO } from '../dtos/user.create.dto';
+import { UserFindOneDTO } from '../dtos/user.findOne.dto';
+import { UserUpdateDto } from '../dtos/user.update.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { CryptService } from 'src/core/infraestructure/presentation/services/crypt.service';
+import { Roles } from 'src/core/infraestructure/presentation/decorators/roles';
+import { RoleEnum } from 'src/core/infraestructure/presentation/decorators/enums/role.enum';
+import { AuthorizationGuard } from 'src/core/infraestructure/presentation/guards/authorization.guard';
+import { AuthenticationGuard } from 'src/core/infraestructure/presentation/guards/authentication.guard';
 
 @ApiTags('User')
 @Controller('users')
@@ -19,6 +38,7 @@ export class UserController {
     private readonly userFindByEmail: UserByEmail,
     private readonly userFindOne: UserById,
     private readonly userList: UserList,
+    private readonly userUpdate: UserUpdate,
   ) {}
 
   @Post()
@@ -27,7 +47,10 @@ export class UserController {
     // Pasos de un enfoque DDD
     // 1. Validar que el objeto(dominio) recibido sea válido (Validas el negocio)
     console.log('[LOG] body', body);
-    const userProperties: UserProperties = body;
+    const userProperties: UserProperties = {
+      ...body,
+      password: await CryptService.hashPassword(body.password),
+    };
 
     console.log('[LOG] UserCreateDTO', userProperties);
 
@@ -44,6 +67,8 @@ export class UserController {
 
   @Get()
   @ApiOperation({ summary: 'List users' })
+  @Roles(RoleEnum.ADMIN, RoleEnum.TEACHER)
+  @UseGuards(AuthorizationGuard, AuthenticationGuard)
   async list() {
     const user = await this.userList.list();
 
@@ -64,5 +89,11 @@ export class UserController {
     const { userId } = params;
     const user = await this.userFindOne.findOne(userId);
     return user;
+  }
+
+  @Put(':userId')
+  async update(@Param() params: UserFindOneDTO, @Body() dto: UserUpdateDto) {
+    const { userId } = params;
+    return this.userUpdate.update(userId, dto as UserUpdateProperties);
   }
 }

@@ -1,0 +1,390 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/appointment": {
+      "post": {
+        "operationId": "createAppointment",
+        "summary": "Create appointment",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Appointment"
+        ]
+      }
+    },
+    "/v1/roles": {
+      "get": {
+        "operationId": "list",
+        "summary": "List roles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Role"
+        ]
+      }
+    },
+    "/v1/users": {
+      "post": {
+        "operationId": "create",
+        "summary": "Create user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "get": {
+        "operationId": "findByEmail",
+        "summary": "Find user by email",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/v1/users/{userId}": {
+      "get": {
+        "operationId": "findOne",
+        "summary": "Find user by id",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/v1/courses": {
+      "post": {
+        "operationId": "create",
+        "summary": "Create course",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Course created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      },
+      "get": {
+        "operationId": "list",
+        "summary": "List courses",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      }
+    },
+    "/v1/courses/{id}": {
+      "put": {
+        "operationId": "update",
+        "summary": "Update course",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseCreateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      },
+      "get": {
+        "operationId": "findById",
+        "summary": "Find course by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      }
+    },
+    "/v1/courses/slug/{slug}": {
+      "get": {
+        "operationId": "findBySlug",
+        "summary": "Find course by slug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      }
+    },
+    "/v1/courses/page/{page}/{pageSize}": {
+      "get": {
+        "operationId": "findByPage",
+        "summary": "Find course by page",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      }
+    },
+    "/v1/courses/disable/{id}": {
+      "delete": {
+        "operationId": "softDelete",
+        "summary": "Disable course",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      }
+    },
+    "/v1/courses/remove/{id}": {
+      "delete": {
+        "operationId": "delete",
+        "summary": "Remove course",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Course"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Nest AppCourse",
+    "description": "Nest AppCourse Advanced",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "v1",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "AppointmentDTO": {
+        "type": "object",
+        "properties": {}
+      },
+      "UserCreateDTO": {
+        "type": "object",
+        "properties": {}
+      },
+      "UserUpdateDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CourseCreateDTO": {
+        "type": "object",
+        "properties": {}
+      },
+      "CourseResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Course id",
+            "example": "a8864bb5-eec1-466a-8ee6-00e8c802c297"
+          },
+          "title": {
+            "type": "string",
+            "description": "Course title",
+            "example": "NestJS"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Course slug",
+            "example": "nestjs"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Course created at",
+            "example": "2022-01-01T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "slug",
+          "createdAt"
+        ]
+      }
+    }
+  }
+}

@@ -27,7 +27,7 @@ export class CourseInfraestructure implements CourseRepository {
     try {
       const courseEntity = CourseDto.fromDomainToData(course) as CourseEntity;
 
-      await this.repository.update(id, courseEntity);
+      await this.repository.update(courseEntity.id, courseEntity);
       return course;
     } catch (error) {
       throw new Error(error);

@@ -13,8 +13,9 @@ import { CourseApplication } from 'src/modules/course/application/course.applica
 import { CourseCreateDTO } from '../dtos/course-create.dto';
 import { CourseIdDTO } from '../dtos/course-id.dto';
 import { CourseService } from 'src/modules/course/application/services/course.service';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiCreatedResponse } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
+import { CourseResponse } from 'src/modules/course/application/dtos/course.dto.application';
 
 @ApiTags('Course')
 @Controller('courses')
@@ -25,10 +26,12 @@ export class CourseController {
   ) {}
 
   @Post()
+  @ApiCreatedResponse({
+    description: 'Course created',
+    type: CourseResponse,
+  })
   @ApiOperation({ summary: 'Create course' })
   async create(@Body() body: CourseCreateDTO) {
-    console.log('[LOG] create body', body);
-
     const slug = await this.courseService.generateSlug(body.title);
 
     const props: CourseProps = {
